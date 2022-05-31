@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -21,13 +22,34 @@ class OrderController extends Controller
         $number = $date.str_pad($number_of_today_orders + 1, 4, "0", STR_PAD_LEFT);
         $item_ids = $request->item_id;
         $item_qty = $request->item_qty;
-        if($request->customer)
-            $customer = $request->customer;
-        else
-            $customer = 'customer';
+        if($request->customer){
+            $identifier = $request->customer;
+            // search if customer exist
+            $customer = Customer::where('identifier',$identifier)->first();
+            if($customer){
+                $customer->update([
+                    'points' => $customer->points + 1 ,
+                ]);
+                $customer_object = $customer;
+            }
+            else{
+                $customer_object = Customer::create([
+                'identifier' => $identifier,
+                'points' => 1,
+            ]);
+            }
+        }
+        else{
+            $identifier = 'customer';
+            $customer_object = Customer::where('identifier','customer')->first();
+            $customer_object->update([
+                'points' => $customer_object->points + 1 ,
+            ]);
+        }
         $order = Order::create([
+            'customer_id' => $customer_object->id ,
             'number' => $number ,
-            'customer' => $customer ,
+            'customer' => $identifier ,
             'total_price' => 0 ,
         ]);
         //$order->items()->attach($item_ids);
@@ -42,7 +64,8 @@ class OrderController extends Controller
                 ]);
         }
         $order_items = $order->orderItems;
-        return view('Order.print_order',['order'=>$order,'order_items'=>$order_items]);
+       // return view('Order.print_order',['order'=>$order,'order_items'=>$order_items]);
+       return redirect('/')->with('success','Order created successfully | تم ارسال طلبك بنجاح');
 
 
 
@@ -121,5 +144,23 @@ class OrderController extends Controller
         $printer -> pulse();
         $printer -> close();
 */
+    }
+
+    public function view(){
+        $orders = Order::with('customer')->orderBy('created_at','DESC')->simplePaginate(20);
+        $last_updated_order_timestamp = Order::orderBy('created_at','DESC')->first()->created_at;
+        return view('Order.view_orders',['orders'=>$orders,'last_updated_order_timestamp'=>$last_updated_order_timestamp]);
+    }
+
+    /* AJAX */
+    public function checkNewOrders(Request $request){
+        $new_orders_count = Order::where('created_at' , '>' ,  Carbon::parse($request->updated_at) )->count();
+        return response($new_orders_count);
+    }
+
+    public function print($id){
+        $order = Order::findOrFail($id);
+        $order_items = $order->orderItems;
+        return view('Order.print_order',['order'=>$order,'order_items'=>$order_items]);
     }
 }

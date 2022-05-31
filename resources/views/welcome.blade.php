@@ -41,14 +41,25 @@
                             <span class="badge bg-dark ms-1 rounded-pill">0</span>
                         </button>
                         --}}
-                        <input type="text" name="customer" placeholder="اسمك | your name">
+                        <input type="text" name="customer" placeholder="Phone 05xxxxxxxx">
                         <button style="margin-left: 20px;" class="btn btn-success">
                             confirm | تأكيد
                         </button>
+                        @if($user->isAdmin())
+                        <a href="{{ route('view.items') }}" class="btn btn-danger" style="margin-left: 20px;">Items</a>
+                        <a href="{{ route('view.orders') }}" class="btn btn-danger" style="margin-left: 20px;">Orders</a>
+                        @endif
                 </div>
             </div>
         </nav>
-
+        @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Congratulations !</strong> {{ Session::get('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        @endif
         <!-- Section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
@@ -59,7 +70,7 @@
                     <div class="col mb-5">
                         <div class="card h-100" id="item-card-{{$item->id}}">
                             <!-- Sale badge-->
-                            <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem ;" id="counter-bg-{{$item->id}}"><h4 id="quantity-{{$item->id}}">0</h4></div>
+                            <div class="badge bg-danger text-white position-absolute" style="top: -1.5rem; right: 0.5rem;" id="counter-bg-{{$item->id}}"><h4 id="quantity-{{$item->id}}">0</h4></div>
                             <input type="hidden" value="0" id="quantity-hidden-{{$item->id}}">
                             <!-- Product image-->
                             <img class="card-img-top" src="{{asset('Public/image/'.$item->image)}}" alt="..." />
@@ -91,8 +102,12 @@
         </section>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Dabbagh</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Dabbagh</p></div>
         </footer>
+        </form>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button class="btn btn-danger" style="margin-left: 20px;">logout</button>
         </form>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -129,6 +144,13 @@
                     }
                 }
             });
+
+
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 10000);
         </script>
     </body>
 </html>

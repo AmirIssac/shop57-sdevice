@@ -28,17 +28,17 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <form action="{{route('store.item')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('update.item',$item->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <label>Arabic Name</label>
-                        <input type="text" name="name_ar">
+                        <input type="text" name="name_ar" value="{{ $item->name }}">
                         <label>English Name</label>
-                        <input type="text" name="name_en">
+                        <input type="text" name="name_en" value="{{ $item->name_en }}">
                         <label>Price</label>
-                        <input type="number" step="0.1" name="price">
+                        <input type="number" step="0.1" name="price" value="{{ $item->price }}">
                         <label>Image</label>
                         <input type="file" name="image">
-                        <button class="btn btn-success mt-2">store</button>
+                        <button class="btn btn-success mt-2">update</button>
                     </form>
                 </div>
             </div>
