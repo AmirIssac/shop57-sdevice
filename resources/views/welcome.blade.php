@@ -1,13 +1,18 @@
     @extends('layouts.main')
     @section('body')
+    <style>
+    .item-img:hover{
+  transform: scale(1.5);
+    }
+    </style>
     <body>
         <!-- Navigation-->
         <form action="{{ route('submit.order') }}" method="POST">
             @csrf
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <img style="border-radius: 50%" src="{{asset('public/Image/logo.jpg')}}" height="50px">
-                <a class="navbar-brand" href="#!">Dabbagh shop 57</a>
+                <img style="border-radius: 50%" src="{{asset('public/public/Image/logo.jpg')}}" height="50px">
+                <a class="navbar-brand" href="/">Dabbagh shop 57</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         {{--
@@ -49,7 +54,7 @@
                             <div class="badge bg-danger text-white position-absolute" style="top: -1.5rem; right: 0.5rem;" id="counter-bg-{{$item->id}}"><h4 id="quantity-{{$item->id}}">0</h4></div>
                             <input type="hidden" value="0" id="quantity-hidden-{{$item->id}}">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{asset('Public/image/'.$item->image)}}" alt="..." />
+                            <img class="item-img" class="card-img-top" src="{{asset('public/Public/image/'.$item->image)}}" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-2">
                                 <div class="text-center">

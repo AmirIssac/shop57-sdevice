@@ -1,10 +1,13 @@
 @extends('layouts.main')
+@section('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 @section('body')
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Dabbagh shop 57</a>
+                <a class="navbar-brand" href="/">Dabbagh shop 57</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                  Orders
@@ -31,7 +34,10 @@
                             <th scope="row">{{ $order->number }}</th>
                             <td>{{ $order->customer }}</td>
                             <td>{{ $order->created_at }}</td>
-                            <td><a href="{{ route('print.invoice',$order->id) }}" class="btn btn-success">print</a></td>
+                            <td>
+                                <a href="{{ route('view.order',$order->id) }}" class="btn btn-info">view</a>
+                                <a href="{{ route('print.invoice',$order->id) }}" class="btn btn-success">print</a>
+                            </td>
                           </tr>
                           @endforeach
                         </tbody>

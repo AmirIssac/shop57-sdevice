@@ -163,4 +163,10 @@ class OrderController extends Controller
         $order_items = $order->orderItems;
         return view('Order.print_order',['order'=>$order,'order_items'=>$order_items]);
     }
+
+    public function showOrder($id){
+        $order = Order::findOrFail($id);
+        $order_items = $order->orderItems;
+        return view('Order.view',['order'=>$order,'order_items'=>$order_items]);
+    }
 }

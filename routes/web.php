@@ -28,6 +28,7 @@ Route::group(['middleware'=>['auth','admin']] , function(){
     Route::post('/store-item',[App\Http\Controllers\ItemController::class, 'store'])->name('store.item');
     Route::post('/update/item/{item_id}',[App\Http\Controllers\ItemController::class, 'update'])->name('update.item');
     Route::get('/view-orders',[App\Http\Controllers\OrderController::class, 'view'])->name('view.orders');
+    Route::get('/view-order/{order_id}',[App\Http\Controllers\OrderController::class, 'showOrder'])->name('view.order');
     Route::get('/print-invoice/{order_id}',[App\Http\Controllers\OrderController::class, 'print'])->name('print.invoice');
 });
 Route::group(['middleware'=>['auth']] , function(){

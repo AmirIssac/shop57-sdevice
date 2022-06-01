@@ -66,7 +66,7 @@
     </style>
     <body>
         <div class="ticket">
-            <img src="{{asset('public/Image/logo.jpg')}}" alt="Logo">
+            <img src="{{asset('public/public/Image/logo.jpg')}}" alt="Logo">
             <p class="centered">dabbagh shop 57
                 <br>{{$order->customer}}-{{$order->number}}</p>
             <table>
